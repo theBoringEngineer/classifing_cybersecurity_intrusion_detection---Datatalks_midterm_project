@@ -1,0 +1,56 @@
+# Predicting the risk of being drawn into online sex work.
+
+## Step 1: The dataset
+
+- kaggle dataset: https://www.kaggle.com/datasets/panoskostakos/online-sex-work
+- Goal: Detect individuals at risk of being drawn into online sex work based on their digital activity, demographics, and social/psychological markers.
+- Challenge: The dataset has limited labeled data (few known “at-risk” cases and many unlabeled ones), which makes it ideal for semi-supervised learning or anomaly detection.
+
+## Setting up ENV (pipenv)
+
+- python
+- source testenv/bin/activate
+
+## Setting up requirements file from virtual env (Optional)
+
+- pip install -r requirements.txt
+- pip freeze > requirements.txt
+
+## Setting up Docker (We are using python:3.13.9 image)
+
+- docker run -it --rm --entrypoint=bash python:3.13.9-slim
+
+### Building/running docker file
+
+- docker build -t [name] .
+
+- Note: [name] = churn-model-test
+
+### Run with new build
+
+- docker run -it --rm --entrypoint=bash [name]
+
+- Note: [name] = churn-model-test
+
+## Running model on production server (Waitress)
+
+- waitress-serve --listen=0.0.0.0:9696 predict:app
+
+## Exposing and mapping docker env to service ports
+
+- Add in docker file:
+- - EXPOSE 9696
+- - ENTRYPOINT [ "waitress-serve", "--listen=0.0.0.0:9696", "predict:app" ]
+- Build image again: docker build -t [name] .
+- Map conatainer and host ports: docker run -it -p 9696:9696 [name]
+
+- Note: [name] = churn-model-test
+
+## Deploy to cloud(AWS:Elastic Beanstalk)
+
+- Note: The aws service is a dependecy, hence, it should be installed in the local virtual env(venv/pipenv) rather than within the docker env.
+- pip install [service/dependency]
+- eb init -p docker -r eu-north-1 churn-serving
+- Test it works locally: eb local run --port 9696
+
+- Note: [service/dependency] = awsebcli
