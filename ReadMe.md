@@ -2,9 +2,9 @@
 
 ## Step 1: The dataset
 
-- kaggle dataset: https://www.kaggle.com/datasets/panoskostakos/online-sex-work
-- Goal: Detect individuals at risk of being drawn into online sex work based on their digital activity, demographics, and social/psychological markers.
-- Challenge: The dataset has limited labeled data (few known “at-risk” cases and many unlabeled ones), which makes it ideal for semi-supervised learning or anomaly detection.
+- kaggle dataset:https://www.kaggle.com/datasets/dnkumars/cybersecurity-intrusion-detection-dataset
+- Goal:
+- Challenge:
 
 ## Setting up ENV (pipenv)
 
