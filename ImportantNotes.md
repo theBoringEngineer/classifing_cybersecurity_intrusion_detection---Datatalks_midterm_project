@@ -42,7 +42,6 @@
 
 - Note: The aws service is a dependecy, hence, it should be installed in the local virtual env(venv/pipenv) rather than within the docker env.
 - pip install [service/dependency]
-- eb init -p docker -r eu-north-1 churn-serving
-- Test it works locally: eb local run --port 9696
+- eb init -p docker -r eu-north-1 intrusion-detector
 
 - Note: [service/dependency] = awsebcli

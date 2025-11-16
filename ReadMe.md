@@ -1,12 +1,19 @@
-# Cybersecurity Intrusion Detection - ML Midterm Project
+# Cybersecurity Intrusion Detection Service.
 
 My project is a machine learning service for detecting cybersecurity intrusions using network session data. The project demonstrates a complete ML workflow from data exploration to production deployment with Docker.
 
 ## The Problem
 
-**Objective**: Detect malicious network sessions (attacks) based on session characteristics like protocol type, encryption, packet size, login attempts, and user behavior patterns.
+Cybersecurity threats are increasing exponentially. Organizations face thousands of intrusion attempts daily, and manual detection is impossible at scale. A single successful attack can result in:
 
-**Dataset**: Cybersecurity intrusion detection dataset with 10,000+ network sessions
+- Data breaches costing millions in damages
+- Loss of customer trust and reputation
+- Legal consequences and regulatory fines
+- Operational downtime and business disruption
+
+**Objective**: The ojective of this project is to detect malicious network sessions (attacks) based on session characteristics like protocol type, encryption, packet size, login attempts, and user behavior patterns.
+
+**Dataset**: Cybersecurity intrusion detection dataset with 9537 network sessions
 
 - **Features**: 10 features (3 categorical, 6 numerical, 1 identifier)
 - **Target**: Binary classification (attack detected: 0 or 1)
@@ -63,16 +70,18 @@ cd cybersecurity-intrusion-detection
 ### 2. Download Dataset
 
 ```bash
-wget https://raw.githubusercontent.com/theBoringEngineer/classifing_cybersecurity_intrusion_detection---Datatalks_midterm_project/refs/heads/main/data/raw/cybersecurity_intrusion_data.csv -O security_intrusion_dataset.csv
+wget https://raw.githubusercontent.com/theBoringEngineer/classifing_cybersecurity_intrusion_detection---Datatalks_midterm_project/refs/heads/main/data/security_intrusion_dataset.csv
 ```
 
 ### 3. Install Dependencies
 
+Install the virtual env **pipenv**
+
 ```bash
-pip install -r requirements.txt
+pipenv install requirements > requirements.txt
 ```
 
-## 🏋️ Training the Model
+## Training the Model
 
 Run the training script to train and evaluate all models:
 
@@ -81,6 +90,7 @@ python train.py
 ```
 
 **Output:**
+This can be found in the **model** folder
 
 - `model.bin` - Best performing model
 - `dv.bin` - DictVectorizer for feature encoding
@@ -96,7 +106,7 @@ python train.py
 6. Evaluates on test set
 7. Saves model artifacts
 
-## 🔮 Making Predictions
+## Making Predictions
 
 ### Standalone Prediction Script
 
@@ -140,7 +150,7 @@ probability = model.predict_proba(X_scaled)[0, 1]
 print(f"Attack probability: {probability:.4f}")
 ```
 
-## 🌐 Web Service Deployment
+## Deploying as a Web Service
 
 ### Running Locally
 
@@ -189,21 +199,25 @@ Content-Type: application/json
 
 ```json
 {
-  "attack_probability": 0.3245,
-  "attack_detected": false,
-  "risk_level": "medium"
+  "attack_detected": true,
+  "attack_probability": 0.9020540286150946,
+  "risk_level": "high"
 }
 ```
 
 ### Testing the API
 
+I created a testing service to test possible sessions.
+
 ```bash
 python test_service.py
 ```
 
+Majorly, the model was testing on **Thunder client vscode extention**
+
 This runs multiple test cases including normal and suspicious sessions.
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 ### Build Docker Image
 
@@ -223,28 +237,7 @@ docker run -it --rm -p 9696:9696 intrusion-detection:v1
 python test_service.py
 ```
 
-### Docker Compose (Optional)
-
-Create `docker-compose.yml`:
-
-```yaml
-version: "3.8"
-
-services:
-  intrusion-detection:
-    build: .
-    ports:
-      - "9696:9696"
-    restart: unless-stopped
-```
-
-Run with:
-
-```bash
-docker-compose up
-```
-
-## 📊 Model Performance
+## Model Performance
 
 **Random Forest (Final Model):**
 
@@ -260,7 +253,25 @@ docker-compose up
 - `encryption_used` = 'no_enc' increases attack probability
 - Sessions with high `login_attempts` are suspicious
 
-## 🔄 Reproducibility
+## Cloud Deployment
+
+### AWS Elastic Beanstalk
+
+```bash
+# Install EB CLI
+pipenv install awsebcli
+
+# Initialize
+eb init -p docker intrusion-detector
+
+# Create environment and deploy
+eb create intrusion-detection-env
+```
+
+The application can be found at:  
+[Intrusion Detector Live](http://intrusion-detection-env.eba-beijepmj.eu-north-1.elasticbeanstalk.com/)
+
+## Reproducibility
 
 **Fixed Random Seed**: `RANDOM_STATE = 1`
 
@@ -274,62 +285,9 @@ docker-compose up
 - Docker image uses specific Python version
 - Training script logs all parameters
 
-## ☁️ Cloud Deployment (Bonus)
+## Development Notes
 
-### AWS Elastic Beanstalk
-
-```bash
-# Install EB CLI
-pip install awsebcli
-
-# Initialize
-eb init -p docker intrusion-detection
-
-# Create environment and deploy
-eb create intrusion-detection-env
-```
-
-### Google Cloud Run
-
-```bash
-# Build and push to Container Registry
-gcloud builds submit --tag gcr.io/PROJECT_ID/intrusion-detection
-
-# Deploy
-gcloud run deploy intrusion-detection \
-  --image gcr.io/PROJECT_ID/intrusion-detection \
-  --platform managed \
-  --port 9696
-```
-
-### Azure Container Instances
-
-```bash
-# Build and push to ACR
-az acr build --registry myregistry --image intrusion-detection:v1 .
-
-# Deploy
-az container create \
-  --resource-group myResourceGroup \
-  --name intrusion-detection \
-  --image myregistry.azurecr.io/intrusion-detection:v1 \
-  --ports 9696
-```
-
-## 🧪 Testing Checklist
-
-- [x] Train model successfully
-- [x] Make predictions with standalone script
-- [x] Start Flask service locally
-- [x] Test API endpoints
-- [x] Build Docker image
-- [x] Run Docker container
-- [x] Test Dockerized service
-- [ ] Deploy to cloud (optional)
-
-## 📝 Development Notes
-
-**Why These Technologies?**
+**Tech Used**
 
 - **pandas/numpy**: Data manipulation and numerical operations
 - **scikit-learn**: ML algorithms and preprocessing
@@ -348,18 +306,6 @@ az container create \
 - Health check endpoint
 - Comprehensive documentation
 
-## 🤝 Peer Review Criteria
-
-- [x] Problem description clearly documented
-- [x] EDA performed in notebook
-- [x] Model training script with multiple models
-- [x] Model exported properly (pickle)
-- [x] Web service with Flask
-- [x] Dependency management (requirements.txt)
-- [x] Dockerfile for containerization
-- [x] Instructions for running locally and with Docker
-- [x] README with complete documentation
-
 ---
 
-**Built with ❤️ for ML Zoomcamp Midterm Project**
+**Built with ❤️ from Marvel for ML Zoomcamp Midterm Project**

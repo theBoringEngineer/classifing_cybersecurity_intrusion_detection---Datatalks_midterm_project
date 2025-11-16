@@ -42,16 +42,15 @@ def main():
     model, dv, scaler = load_model()
     print("Model loaded successfully!")
     
-    # Example session
     session = {
         'protocol_type': 'tcp',
         'encryption_used': 'aes',
         'browser_type': 'chrome',
-        'network_packet_size': 1500,
-        'login_attempts': 5,
-        'session_duration': 300,
-        'ip_reputation_score': 0.8,
-        'failed_logins': 2,
+        'network_packet_size': 1200,
+        'login_attempts': 4,        
+        'session_duration': 600,
+        'ip_reputation_score': 0.30,  
+        'failed_logins': 1,      
         'unusual_time_access': 0
     }
     
