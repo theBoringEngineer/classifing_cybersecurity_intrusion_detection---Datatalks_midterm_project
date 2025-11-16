@@ -97,7 +97,7 @@ def main():
         test_health()
     except Exception as e:
         print(f"Health check failed: {e}")
-        print(f"Make sure the service is running on http://{host}\n")
+        print(f"Make sure the service is running on {host}\n")
         return
     
     # Test predictions
