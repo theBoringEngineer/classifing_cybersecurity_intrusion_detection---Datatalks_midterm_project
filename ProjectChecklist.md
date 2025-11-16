@@ -1,59 +1,56 @@
-## Project Checklist
+# Predicting the risk of being drawn into online sex work.
 
-1. Problem & Data
+## Step 1: The dataset
 
-- Define project goal (risk detection, early intervention)
+- kaggle dataset:https://www.kaggle.com/datasets/dnkumars/cybersecurity-intrusion-detection-dataset
+- Goal:
+- Challenge:
 
-- Summarize dataset origin, features, and missing values
+## Setting up ENV (pipenv)
 
-- Describe ethical considerations (privacy, consent, labeling bias)
+- python
+- source testenv/bin/activate
 
-2. Baseline Model
+## Setting up requirements file from virtual env (Optional)
 
-- Train Logistic Regression on labeled subset
+- pip install -r requirements.txt
+- pip freeze > requirements.txt
 
-- Record metrics: accuracy, precision, recall, F1, AUC
+## Setting up Docker (We are using python:3.13.9 image)
 
-- Interpret coefficients to find key predictors
+- docker run -it --rm --entrypoint=bash python:3.13.9-slim
 
-3. Semi-Supervised Extension
+### Building/running docker file
 
-- Implement SelfTrainingClassifier with Logistic Regression base
+- docker build -t [name] .
 
-- Choose confidence threshold (e.g., 0.9)
+- Note: [name] = churn-model-test
 
-- Evaluate improvement over baseline
+### Run with new build
 
-4. Model Explainability
+- docker run -it --rm --entrypoint=bash [name]
 
-- Use SHAP for global feature importance
+- Note: [name] = churn-model-test
 
-- Generate top positive/negative contributing factors
+## Running model on production server (Waitress)
 
-- Add interpretability plots to reports/figures/
+- waitress-serve --listen=0.0.0.0:9696 predict:app
 
-5. Reproducibility
+## Exposing and mapping docker env to service ports
 
-- Fix random seeds
+- Add in docker file:
+- - EXPOSE 9696
+- - ENTRYPOINT [ "waitress-serve", "--listen=0.0.0.0:9696", "predict:app" ]
+- Build image again: docker build -t [name] .
+- Map conatainer and host ports: docker run -it -p 9696:9696 [name]
 
-- Save trained model (.pkl)
+- Note: [name] = churn-model-test
 
-- Store requirements.txt or use conda env export
+## Deploy to cloud(AWS:Elastic Beanstalk)
 
-- Write all parameters in config.yaml
+- Note: The aws service is a dependecy, hence, it should be installed in the local virtual env(venv/pipenv) rather than within the docker env.
+- pip install [service/dependency]
+- eb init -p docker -r eu-north-1 churn-serving
+- Test it works locally: eb local run --port 9696
 
-6. Deployment
-
-- Build simple serve.py API/Streamlit dashboard
-
-- Containerize with Docker
-
-- Optionally deploy on Render / Hugging Face Spaces / AWS
-
-7. Documentation
-
-- Update README.md (overview, setup, usage)
-
-- Include ethical statement and citation for dataset
-
-- Include reproducibility steps (exact commands to rerun results)
+- Note: [service/dependency] = awsebcli

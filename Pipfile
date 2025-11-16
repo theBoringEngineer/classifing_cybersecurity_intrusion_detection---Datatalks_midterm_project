@@ -4,15 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
 pandas = "*"
+numpy = "*"
 scikit-learn = "*"
-flask = "*"
 matplotlib = "*"
+flask = "*"
 waitress = "*"
+requests = "*"
 
 [dev-packages]
-ipykernel = "*"
 
 [requires]
 python_version = "3.13"
