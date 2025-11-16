@@ -1,8 +1,8 @@
 # Cybersecurity Intrusion Detection - ML Midterm Project
 
-A machine learning service for detecting cybersecurity intrusions using network session data. This project demonstrates a complete ML workflow from data exploration to production deployment with Docker.
+My project is a machine learning service for detecting cybersecurity intrusions using network session data. The project demonstrates a complete ML workflow from data exploration to production deployment with Docker.
 
-## 📊 Problem Description
+## The Problem
 
 **Objective**: Detect malicious network sessions (attacks) based on session characteristics like protocol type, encryption, packet size, login attempts, and user behavior patterns.
 
@@ -14,30 +14,7 @@ A machine learning service for detecting cybersecurity intrusions using network 
 
 **Business Value**: Early detection of security threats can prevent data breaches, protect systems, and reduce incident response time.
 
-## 📁 Project Structure
-
-```
-cybersecurity-intrusion-detection/
-│
-├── notebook.ipynb              # EDA and model exploration
-├── train.py                    # Training pipeline script
-├── predict.py                  # Standalone prediction script
-├── serve.py                    # Flask web service
-├── test_service.py             # API testing script
-│
-├── requirements.txt            # Python dependencies
-├── Dockerfile                  # Docker configuration
-├── docker-compose.yml          # Docker Compose setup (optional)
-│
-├── model.bin                   # Trained model (after training)
-├── dv.bin                      # DictVectorizer (after training)
-├── scaler.bin                  # StandardScaler (after training)
-│
-├── security_intrusion_dataset.csv  # Dataset
-└── README.md                   # This file
-```
-
-## 🔧 Features
+## Features
 
 **Categorical Features:**
 
@@ -54,7 +31,7 @@ cybersecurity-intrusion-detection/
 - `failed_logins`: Number of failed login attempts
 - `unusual_time_access`: Access during unusual hours (0 or 1)
 
-## 🎯 Models Evaluated
+## Models Evaluated
 
 1. **Logistic Regression** - Simple baseline model
 2. **Decision Tree** - Non-linear decision boundaries
@@ -64,20 +41,22 @@ cybersecurity-intrusion-detection/
 
 - Accuracy: ~74-80%
 - ROC AUC: ~80-85%
-- Focus on minimizing false negatives (missed attacks)
 
-## 🚀 Getting Started
+## Getting Started
+
+To replicate this project:
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.13.9
 - Docker (for containerization)
 - pip (Python package manager)
 
 ### 1. Clone Repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/theBoringEngineer/classifing_cybersecurity_intrusion_detection---Datatalks_midterm_project
+
 cd cybersecurity-intrusion-detection
 ```
 
@@ -380,14 +359,6 @@ az container create \
 - [x] Dockerfile for containerization
 - [x] Instructions for running locally and with Docker
 - [x] README with complete documentation
-
-## 📧 Contact
-
-For questions or issues, please open an issue in the repository.
-
-## 📄 License
-
-This project is for educational purposes as part of the ML Zoomcamp course.
 
 ---
 

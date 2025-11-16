@@ -16,7 +16,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy model artifacts
-COPY ["model.bin", "dv.bin", "scaler.bin", "./"]
+COPY model/ ./model/
 
 # Copy application code
 COPY serve.py .

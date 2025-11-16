@@ -16,21 +16,13 @@
 - pip install -r requirements.txt
 - pip freeze > requirements.txt
 
-## Setting up Docker (We are using python:3.13.9 image)
-
-- docker run -it --rm --entrypoint=bash python:3.13.9-slim
-
 ### Building/running docker file
 
 - docker build -t [name] .
 
-- Note: [name] = churn-model-test
+- docker run -it --rm --entrypoint=bash python:3.13.9-slim
 
-### Run with new build
-
-- docker run -it --rm --entrypoint=bash [name]
-
-- Note: [name] = churn-model-test
+- Note: [name] = intrusion-detector
 
 ## Running model on production server (Waitress)
 
@@ -44,7 +36,7 @@
 - Build image again: docker build -t [name] .
 - Map conatainer and host ports: docker run -it -p 9696:9696 [name]
 
-- Note: [name] = churn-model-test
+- Note: [name] = intrusion-detector
 
 ## Deploy to cloud(AWS:Elastic Beanstalk)
 
